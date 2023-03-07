@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import view from "../../../assets/view.png";
 import hide from "../../../assets/hide.png";
 import google from "../../../assets/google.png";
@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { createUser, googleLogin, updateUser } from '../../../features/auth/authSlice';
 import { toast } from 'react-hot-toast';
 import Spinner from '../../Shared/Spinner/Spinner';
+import { setStoreUser } from '../../../Hooks/StoreUser/setStoreUser';
 
 const Signup = () => {
     const [passVisible, setPassVisible] = useState(false);
@@ -14,27 +15,66 @@ const Signup = () => {
     const [confirmPassword, setConfirmPassword] = useState("");
     const { isLoading, user, googleLoading, isError, error } = useSelector(state => state.auth);
     const dispatch = useDispatch();
+    const location = useLocation();
     const navigate = useNavigate();
+    const from = location.state?.from?.pathname || "/user-profile";
 
 
     const handleSignUp = e => {
         e.preventDefault();
         const form = e.target;
         const email = form.email.value;
-        const displayName = form.name.value;
+        const name = form.name.value;
+        const image = form.image.files[0];
         const password = form.password.value;
-        dispatch(createUser({ email, password })).then(result => {
-            console.log(result.payload.uid);
-            if (result.payload.uid) {
-                toast.success("Signup Successful")
-            }
 
+        const user = {
+            name,
+            email
+        }
+
+        // Upload Image Into Cloudinary
+        const data = new FormData();
+        data.append("file", image);
+        data.append("upload_preset", "Deshi_Vibes");
+        data.append("cloud_name", "dou96vwyp");
+
+        fetch("https://api.cloudinary.com/v1_1/dou96vwyp/image/upload", {
+            method: "post",
+            body: data
         })
+            .then(res => res.json())
+            .then(data => {
+                if (data.secure_url) {
+                    dispatch(createUser({ email, password }))
+                        .then(result => {
+                            // Store User Into DataBase
+                            console.log("from cloudinary", data);
+                            console.log("photo_url", data.url);
+                            setStoreUser(user);
+
+                            dispatch(updateUser(name, data.url))
+                                .then(result => {
+                                    console.log(result);
+                                    form.reset();
+                                    toast.success("SignUp Successful...!")
+                                    navigate(from, { replace: true });
+                                })
+
+                        })
+                }
+            })
+
     }
 
 
     const handleGoogleLogin = () => {
-        dispatch(googleLogin());
+        dispatch(googleLogin()).then(result => {
+            if (result.payload.email) {
+                setStoreUser(result.payload);
+                toast.success("Login With Google Successful")
+            }
+        })
     }
 
 
@@ -164,7 +204,7 @@ const Signup = () => {
                             </p>
                         </div>
                         {
-                            password !== confirmPassword && <p className='text-red-600 text-sm'>Password doesn't match.</p>
+                            password !== confirmPassword && <p className='text-red text-sm'>Password doesn't match.</p>
                         }
                         <button
                             disabled={password !== confirmPassword}

@@ -1,13 +1,12 @@
-export const useStoreUser = user => {
+export const setStoreUser = user => {
 
     const currentUser = {
         userName: user?.name || user?.displayName,
         email: user?.email,
     };
 
-
     // Save User In Database and Get JWT Token
-    fetch(`${process.env.REACT_APP_API_URL}/user/${user?.email}`, {
+    fetch(`http://localhost:5000/user/${user?.email}`, {
         method: "PUT",
         headers: {
             "content-type": "application/json"
@@ -16,6 +15,6 @@ export const useStoreUser = user => {
     })
         .then(res => res.json())
         .then(data => {
-            localStorage.setItem("deshi-vibes", data.token)
+            localStorage.setItem("deshi-vibes", data.token);
         })
 }

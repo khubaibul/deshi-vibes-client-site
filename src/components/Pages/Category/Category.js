@@ -16,7 +16,7 @@ const Category = () => {
             image: womerImage
         },
         {
-            id: 1,
+            id: 3,
             name: "KIDS",
             image: kidsImage
         },

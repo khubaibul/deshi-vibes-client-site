@@ -16,6 +16,16 @@ export const createUser = createAsyncThunk("auth/createUser", async ({ email, pa
     return data.user;
 });
 
+export const updateUser = createAsyncThunk("auth/updateUser", async (name, photo) => {
+    const data = await updateProfile(auth.currentUser,
+        {
+            displayName: name,
+            photoURL: photo,
+        }
+    );
+    return data.user;
+});
+
 export const loginUser = createAsyncThunk("auth/loginUser", async ({ email, password }) => {
     const data = await signInWithEmailAndPassword(auth, email, password);
     return data.user;
@@ -57,6 +67,23 @@ const authSlice = createSlice({
                 state.error = "";
             })
             .addCase(createUser.rejected, (state, action) => {
+                state.isLoading = false;
+                state.user = {};
+                state.isError = true;
+                state.error = action.error.message
+            })
+            .addCase(updateUser.pending, (state) => {
+                state.isLoading = true;
+                state.isError = false;
+                state.error = "";
+            })
+            .addCase(updateUser.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.user = action.payload;
+                state.isError = false;
+                state.error = "";
+            })
+            .addCase(updateUser.rejected, (state, action) => {
                 state.isLoading = false;
                 state.user = {};
                 state.isError = true;

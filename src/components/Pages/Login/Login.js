@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { googleLogin, loginUser } from '../../../features/auth/authSlice';
 import { toast } from 'react-hot-toast';
 import Spinner from '../../Shared/Spinner/Spinner';
+import { setStoreUser } from '../../../Hooks/StoreUser/setStoreUser';
 
 const Login = () => {
     const [passVisible, setPassVisible] = useState(false);
@@ -24,9 +25,9 @@ const Login = () => {
 
     const handleGoogleLogin = () => {
         dispatch(googleLogin()).then(result => {
-            console.log(result);
             if (result.payload.email) {
-                toast.success("Signup Successful")
+                setStoreUser(result.payload);
+                toast.success("Login With Google Successful")
             }
         })
     }
