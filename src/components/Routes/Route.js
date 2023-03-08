@@ -4,6 +4,7 @@ import MainLayouts from "../Layouts/MainLayouts";
 import AddProduct from "../Pages/AddProduct/AddProduct";
 import Home from "../Pages/Home/Home";
 import Login from "../Pages/Login/Login";
+import ProductDetails from "../Pages/ProductDetails/ProductDetails";
 import ProductStore from "../Pages/ProductStore/ProductStore";
 import Signup from "../Pages/Signup/Signup";
 import UserProfile from "../Pages/UserProfile/UserProfile";
@@ -22,6 +23,10 @@ export const router = createBrowserRouter([
             {
                 path: "/store",
                 element: <ProductStore />
+            },
+            {
+                path: "/product-detail/:_id",
+                element: <ProductDetails />
             },
             {
                 path: "/login",

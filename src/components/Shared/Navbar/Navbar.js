@@ -40,19 +40,7 @@ const Navbar = () => {
 
     const navLink = <>
         <div className='flex items-center gap-x-4 text-sm font-semibold'>
-            {/* <select name="category" id="category">
-                <option disabled selected value="">
-                    <p>Shop</p>
-                </option>
-                <option value="mens" className='h-56' style={{ backgroundImage: `url(${men})` }
-                }>
-                    <div>
-                        <img src={men} alt="" />
-                    </div>
-                </option>
-            </select> */}
             <NavLink to="/store">Store</NavLink>
-            <NavLink to="/shop">Shop</NavLink>
             <NavLink>Journal</NavLink>
         </div>
         <div>

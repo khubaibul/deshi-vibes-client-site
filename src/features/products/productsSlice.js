@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const productsApi = createApi({
     reducerPath: 'productsApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'https://e-shop-server-livid.vercel.app/' }),
+    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000/' }),
     endpoints: (builder) => ({
         getProducts: builder.query({
             query: () => "/products",
@@ -10,7 +10,14 @@ export const productsApi = createApi({
         getProductById: builder.query({
             query: (_id) => `/product/${_id}`,
         }),
+        addProduct: builder.mutation({
+            query: (data) => ({
+                url: "/add-product",
+                method: "POST",
+                body: data
+            })
+        })
     }),
 })
 
-export const { useGetProductsQuery, useGetProductByIdQuery } = productsApi;
+export const { useGetProductsQuery, useGetProductByIdQuery, useAddProductMutation } = productsApi;

@@ -7,7 +7,7 @@ const MainLayouts = () => {
     return (
         <div>
             <div className='bg-black py-2.5'>
-                <h5 className=' text-primary text-center text-sm font-bold tracking-tight'>Free shipping on orders over BDT2000
+                <h5 className=' text-primary text-center text-sm font-bold tracking-tight'>Free shipping on orders over $200
                 </h5>
             </div>
             <Navbar />

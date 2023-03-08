@@ -13,7 +13,7 @@ const DashboardSidebar = () => {
 
 
     return (
-        <aside id="sidebar" className="z-20 lg:h-screen flex lg:flex flex-shrink-0 flex-col lg:w-56" aria-label="Sidebar">
+        <aside id="sidebar" className="z-20 lg:h-screen flex lg:flex flex-shrink-0 flex-col lg:w-56 font-bebas tracking-widest" aria-label="Sidebar">
             <div className="relative flex-1 flex flex-col min-h-0 border-r border-gray-200  bg-primary pt-0">
                 <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
                     <div className="flex-1 bg-primary text-white divide-y space-y-1">

@@ -1,56 +1,74 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { useAddProductMutation } from '../../../features/products/productsSlice';
 import Spinner from '../../Shared/Spinner/Spinner';
 
 const AddProduct = () => {
     const [tick, setTick] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [category, setCategory] = useState("Men");
+    const [postProduct, { data, isError, error, isLoading, isSuccess }] = useAddProductMutation();
+
+    console.log(data);
+
+    useEffect(() => {
+        if (isLoading) {
+            toast.loading("Adding Product...", { id: "addProduct" })
+        }
+        if (isSuccess) {
+            toast.success("Product Added", { id: "addProduct" });
+
+        }
+    }, [isLoading, isSuccess, loading]);
+
+
 
     const handleAddProduct = e => {
+        setLoading(true);
         e.preventDefault();
         const form = e.target;
         const productName = form.productName.value;
         const category = form.category.value;
-        const cpu = form.cpu.value;
-        const gpu = form.gpu.value;
-        const ssd = form.ssd.value;
-        const image1 = form.image1.value;
-        const image2 = form.image2.value;
-        const image3 = form.image3.value;
-        const image4 = form.image4.value;
-        const quantity = form.quantity.value;
-        const price = form.price.value;
-        // console.log(productName, category, cpu, gpu, ssd, image1, image2, image3, image4, quantity, price);
+        const lineup = form.lineup.value;
+        const image = form.image.files[0];
+        const material = form.material.value;
+        const size = form.size.value;
+        const quantity = parseInt(form.quantity.value);
+        const price = parseInt(form.price.value);
+        const description = form.description.value;
 
-        const product = {
-            name: productName,
-            cpu,
-            gpu,
-            ssd,
-            price,
-            category,
-            quantity,
-            img: [image1, image2, image3, image4]
-        }
-        setLoading(true)
-        fetch(`${process.env.REACT_APP_API_URL}/add-product`, {
-            method: "POST",
-            headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify(product)
+
+        // Upload Image Into Cloudinary
+        const data = new FormData();
+        data.append("file", image);
+        data.append("upload_preset", "Deshi_Vibes");
+        data.append("cloud_name", "dou96vwyp");
+
+        fetch("https://api.cloudinary.com/v1_1/dou96vwyp/image/upload", {
+            method: "post",
+            body: data
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data);
-                if (data.acknowledged) {
-                    toast.success(`${productName} Added Successfully...`);
-                    setLoading(false)
+                if (data.asset_id) {
+
+                    const product = {
+                        name: productName,
+                        category,
+                        lineup,
+                        quantity,
+                        sell: 0,
+                        price,
+                        image: data.secure_url,
+                        material,
+                        size,
+                        description
+                    }
+                    postProduct(product)
+                    setLoading(false);
                     form.reset();
                 }
             })
-
-        setLoading(false)
     }
 
 
@@ -73,65 +91,119 @@ const AddProduct = () => {
                                 required={true}
                             />
                         </div>
-                        <div className='flex flex-col'>
-                            <label className='text-sm text-primary font-medium' htmlFor="category" value="Category">Category</label>
-                            <select name="category" id="category" required
-                                className='w-full py-1 px-4 focus:outline-primary bg-gray-light'>
-                                <option value="Men">Men</option>
-                                <option value="Women">Women</option>
-                                <option value="Kids">Kids</option>
-                                <option value="Accessories">Accessories</option>
-                            </select>
+                        <div className='flex gap-x-3'>
+                            <div className='flex flex-col w-full'>
+                                <label className='text-sm text-primary font-medium' htmlFor="category" value="Category">Category</label>
+                                <select
+                                    onChange={(e) => setCategory(e.target.value)}
+                                    name="category"
+                                    id="category"
+                                    className='w-full py-1 px-2 focus:outline-primary bg-gray-light'
+                                    required={true}
+                                >
+                                    <option value="Men">Men</option>
+                                    <option value="Women">Women</option>
+                                    <option value="Kids">Kids</option>
+                                    <option value="Accessories">Accessories</option>
+                                </select>
+                            </div>
+                            <div className='flex flex-col w-full'>
+                                <label className='text-sm text-primary font-medium' htmlFor="lineup" value="Lineup">Lineup</label>
+                                {
+                                    category === "Men" &&
+                                    <select
+                                        name="lineup"
+                                        id="lineup"
+                                        className='w-full py-1 px-2 focus:outline-primary bg-gray-light'
+                                        required={true}
+                                    >
+                                        <option value="T-Shirt">T-Shirt</option>
+                                        <option value="Hoodie">Hoodie</option>
+                                        <option value="Pant">Pant</option>
+                                        <option value="Shoes">Shoes</option>
+                                    </select>
+                                }
+                                {
+                                    category === "Women" &&
+                                    <select
+                                        name="lineup"
+                                        id="lineup"
+                                        className='w-full py-1 px-2 focus:outline-primary bg-gray-light'
+                                        required={true}
+                                    >
+                                        <option value="Tops">Tops</option>
+                                        <option value="Shoes">Shoes</option>
+                                    </select>
+                                }
+                                {
+                                    category === "Kids" &&
+                                    <select
+                                        name="lineup"
+                                        id="lineup"
+                                        className='w-full py-1 px-2 focus:outline-primary bg-gray-light'
+                                        required={true}
+                                    >
+                                        <option value="Tops">Tops</option>
+                                        <option value="Shirt">Shirt</option>
+                                        <option value="Pant">Pant</option>
+                                        <option value="Shoes">Shoes</option>
+                                    </select>
+                                }
+                                {
+                                    category === "Accessories" &&
+                                    <select
+                                        name="lineup"
+                                        id="lineup"
+                                        className='w-full py-1 px-2 focus:outline-primary bg-gray-light'
+                                        required={true}
+                                    >
+                                        <option value="Watch">Watch</option>
+                                        <option value="Hat">Hat</option>
+                                        <option value="Bracelet">Bracelet</option>
+                                    </select>
+                                }
+                            </div>
                         </div>
                         <div className='flex gap-x-3'>
-                            <div>
-                                <label className='text-sm text-primary font-medium' htmlFor="cpu" value="CPU">CPU</label>
+                            <div className='w-full'>
+                                <label className='text-sm text-primary font-medium' htmlFor="material" value="Material">Material</label>
                                 <input
-                                    name="cpu"
-                                    id="cpu"
+                                    name="material"
+                                    id="material"
                                     type="text"
                                     className='w-full py-1 px-4 focus:outline-primary bg-gray-light'
-                                    placeholder="CPU Name"
+                                    placeholder="Cotton"
                                     required={true}
                                 />
                             </div>
-                            <div>
-                                <label className='text-sm text-primary font-medium' htmlFor="gpu" value="GPU">GPU</label>
-                                <input
-                                    name="gpu"
-                                    id="gpu"
-                                    type="text"
-                                    className='w-full py-1 px-4 focus:outline-primary bg-gray-light'
-                                    placeholder="GPU Name"
+                            <div className='w-full'>
+                                <label className='text-sm text-primary font-medium' htmlFor="size" value="Size">Size</label>
+                                <select
+                                    name="size"
+                                    id="size"
+                                    className='w-full py-1 px-2 focus:outline-primary bg-gray-light'
                                     required={true}
-                                />
-                            </div>
-                            <div>
-                                <label className='text-sm text-primary font-medium' htmlFor="ssd" value="SSD">SSD</label>
-                                <input
-                                    name="ssd"
-                                    id="ssd"
-                                    type="text"
-                                    className='w-full py-1 px-4 focus:outline-primary bg-gray-light'
-                                    placeholder="SSD Size"
-                                    required={true}
-                                />
+                                >
+                                    <option value="S">S</option>
+                                    <option value="M">M</option>
+                                    <option value="L">L</option>
+                                    <option value="XL">XL</option>
+                                    <option value="2XL">2XL</option>
+                                </select>
                             </div>
                         </div>
                         <div className='flex flex-col'>
                             <label htmlFor='image' className='text-sm text-primary font-medium'>
                                 Product Image
                             </label>
-                            <div className='flex flex-col gap-y-2'>
-                                <input
-                                    name='image1'
-                                    id='image1'
-                                    type='text'
-                                    className='w-full py-1 px-4 focus:outline-primary bg-gray-light'
-                                    placeholder="img.png"
-                                    required={true}
-                                />
-                            </div>
+                            <input
+                                type='file'
+                                id='image'
+                                name='image'
+                                accept='image/*'
+                                className='w-full px-2 py-1 focus:outline-primary bg-gray-light'
+                                required={true}
+                            />
                         </div>
                         <div className='flex gap-x-3'>
                             <div>
@@ -152,7 +224,7 @@ const AddProduct = () => {
                                     id="price"
                                     type="number"
                                     className='w-full py-1 px-4 focus:outline-primary bg-gray-light'
-                                    placeholder="BDT 49000"
+                                    placeholder="$99"
                                     required={true}
                                 />
                             </div>
@@ -175,6 +247,7 @@ const AddProduct = () => {
                                 type="checkbox"
                                 onChange={() => setTick(!tick)}
                                 className="accent-primary"
+                                required={true}
                             />
                             <label className='text-sm text-primary font-medium' htmlFor="tick">Every information are accurate</label>
                         </div>
@@ -187,7 +260,7 @@ const AddProduct = () => {
                             {loading ? <Spinner borderColor={"primary"} /> : "Add Product"}
                         </button>
                     </form>
-                    {/* {error && <small className="text-red-500 mt-2">{error}</small>} */}
+                    {isError && <small className="text-red-500 mt-2">{error}</small>}
                 </div>
             </div>
         </section>

@@ -4,7 +4,7 @@ import Loader from '../../Shared/Loader/Loader';
 import Product from '../Product/Product';
 
 const ProductStore = () => {
-    const { data: products, isLoading, isError, error } = useGetProductsQuery();
+    const { data: products, isLoading, isError, error } = useGetProductsQuery(null, { refetchOnMountOrArgChange: true });
 
 
     if (isLoading) {
@@ -22,7 +22,7 @@ const ProductStore = () => {
             }
             {
                 products &&
-                <div className='grid grid-cols-3 px-60 gap-7 my-20'>
+                <div className='grid grid-cols-3 px-60 gap-10 my-20'>
                     {
                         products?.map(product => <Product key={product._id} product={product} />)
                     }
