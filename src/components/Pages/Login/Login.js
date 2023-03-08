@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import view from "../../../assets/view.png";
 import hide from "../../../assets/hide.png";
 import google from "../../../assets/google.png";
@@ -11,9 +11,11 @@ import { setStoreUser } from '../../../Hooks/StoreUser/setStoreUser';
 
 const Login = () => {
     const [passVisible, setPassVisible] = useState(false);
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
     const { isLoading, user, googleLoading, isError, error } = useSelector(state => state.auth);
+    const dispatch = useDispatch();
+    const location = useLocation();
+    const navigate = useNavigate();
+    const from = location.state?.from?.pathname || "/";
 
     const handleLogin = e => {
         e.preventDefault();
@@ -21,22 +23,20 @@ const Login = () => {
         const email = form.email.value;
         const password = form.password.value;
         dispatch(loginUser({ email, password }));
+        toast.success("Login Successful");
+        navigate(from, { replace: true });
     }
 
     const handleGoogleLogin = () => {
         dispatch(googleLogin()).then(result => {
             if (result.payload.email) {
                 setStoreUser(result.payload);
-                toast.success("Login With Google Successful")
+                toast.success("Login With Google Successful");
+                navigate(from, { replace: true });
             }
         })
     }
 
-    useEffect(() => {
-        if (!isLoading && user?.email) {
-            navigate("/");
-        }
-    }, [isLoading, user?.email, navigate]);
 
     useEffect(() => {
         if (isError) {
@@ -110,8 +110,9 @@ const Login = () => {
                                 }
                             </p>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-2 text-primary text-sm font-medium">
                             <input
+                                className='accent-primary mt-1'
                                 name="remember"
                                 id="remember"
                                 type="checkbox"

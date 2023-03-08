@@ -18,6 +18,7 @@ module.exports = {
       'gray-dark': '#273444',
       'gray': '#fafafa',
       'gray-light': '#d3dce6',
+      'green': '#00ff00',
     },
     fontFamily: {
       bebas: ['Bebas Neue', 'cursive'],

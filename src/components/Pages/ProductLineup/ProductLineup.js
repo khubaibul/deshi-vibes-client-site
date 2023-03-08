@@ -53,7 +53,7 @@ const ProductLineup = () => {
         },
     ]
     return (
-        <section className='flex flex-col gap-6 mt-36'>
+        <section className='flex flex-col gap-6 gap-y-28 mt-36'>
             {
                 lineups?.map(lineup => <OneLineup key={lineup.id} lineup={lineup} />)
             }

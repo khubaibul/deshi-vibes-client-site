@@ -5,7 +5,7 @@ import auth from "../../firebase/Firebase.config";
 const initialState = {
     user: {},
     role: "",
-    isLoading: false,
+    isLoading: true,
     googleLoading: false,
     isError: false,
     error: ""

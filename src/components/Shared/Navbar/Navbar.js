@@ -2,21 +2,19 @@ import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AiOutlineUser } from "react-icons/ai";
 import { BsCart2 } from "react-icons/bs";
-import logo from "../../../assets/logo.png";
-import men from "../../../assets/Mens Menu.png"
-import woMen from "../../../assets/Women Menu.png"
-import kids from "../../../assets/Kids Menu.png"
 import { useDispatch, useSelector } from 'react-redux';
 import { signOut } from 'firebase/auth';
 import auth from '../../../firebase/Firebase.config';
 import { logout } from '../../../features/auth/authSlice';
+import logo from "../../../assets/logo.png";
+import menuClose from "../../../assets/close.png";
+import hamBurger from "../../../assets/menu-burger.png";
 
 const Navbar = () => {
+    const [menuOpen, setMenuOpen] = useState(false);
     const [scroll, setScroll] = useState(false);
     const { isLoading, user, googleLoading, isError, error } = useSelector(state => state.auth);
     const dispatch = useDispatch();
-
-
 
     const changeNavbarContent = () => {
         if (window.scrollY >= 150) {
@@ -39,11 +37,11 @@ const Navbar = () => {
 
 
     const navLink = <>
-        <div className='flex items-center gap-x-4 text-sm font-semibold'>
+        <div className='flex lg:flex-row md:flex-row flex-col lg:items-center md:items-center gap-x-4 gap-y-5 text-sm font-semibold'>
             <NavLink to="/store">Store</NavLink>
             <NavLink>Journal</NavLink>
         </div>
-        <div>
+        <div className='hidden lg:block md:block'>
             {
                 scroll ?
                     <NavLink to="/" className="text-2xl font-bebas text-primary">
@@ -52,11 +50,11 @@ const Navbar = () => {
                     : <NavLink to="/" className="text-2xl font-bebas text-primary">Deshi /  Vibes</NavLink>
             }
         </div>
-        <div className='flex items-center gap-x-2'>
-            <NavLink>
+        <div className='flex lg:flex-row md:flex-row flex-col lg:items-center md:items-center gap-x-2 gap-y-5'>
+            <NavLink className="text-xl">
                 <AiOutlineUser />
             </NavLink>
-            <NavLink>
+            <NavLink to="/cart" className="text-xl">
                 <BsCart2 />
             </NavLink>
             <NavLink to="/dashboard" className="px-5 border border-primary hover:bg-primary text-primary hover:text-white transition-all active:bg-opacity-80 font-bebas tracking-wide">
@@ -66,7 +64,7 @@ const Navbar = () => {
                 user?.uid ?
                     <button
                         onClick={() => handleSignOut()}
-                        className="px-5 border border-primary hover:bg-primary text-primary hover:text-white transition-all active:bg-opacity-80 font-bebas tracking-wide">
+                        className="px-5 border text-start border-primary hover:bg-primary text-primary hover:text-white transition-all active:bg-opacity-80 font-bebas tracking-wide">
                         Logout
                     </button>
                     :
@@ -76,9 +74,34 @@ const Navbar = () => {
             }
         </div>
     </>
+
+
     return (
-        <div className='flex justify-between px-24 py-3.5 sticky top-0 bg-white border-b border-gray-light z-50'>
-            {navLink}
+        <div className='sticky top-0 z-50'>
+            <div>
+                <div className='lg:flex md:flex hidden justify-between px-24 py-3.5 bg-white border-b border-gray-light z-50'>
+                    {navLink}
+                </div>
+                <div className='lg:hidden md:hidden ml-2'>
+                    <button
+                        onClick={() => setMenuOpen(!menuOpen)}>
+                        <img src={hamBurger} className="w-10" alt="" />
+                    </button>
+                </div>
+            </div>
+            {
+                menuOpen &&
+                <div className='lg:hidden md:hidden top-0 left-0 fixed h-full w-[70vw] transition-all ease-in-out duration-500 translate-y-0 z-10 p-4 backdrop-blur-[30px] text-primary'>
+                    <div className='flex justify-start mt-8 mb-5 mr-2'>
+                        <button onClick={() => setMenuOpen(!menuOpen)}>
+                            <img src={menuClose} className="w-7" alt="" />
+                        </button>
+                    </div>
+                    <div className='flex flex-col gap-y-5'>
+                        {navLink}
+                    </div>
+                </div>
+            }
         </div>
     );
 };

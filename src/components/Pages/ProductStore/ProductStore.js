@@ -22,7 +22,7 @@ const ProductStore = () => {
             }
             {
                 products &&
-                <div className='grid grid-cols-3 px-60 gap-10 my-20'>
+                <div className='grid lg:grid-cols-3  md:grid-cols-2 lg:px-40 md:px-10 px-6 gap-20 my-20'>
                     {
                         products?.map(product => <Product key={product._id} product={product} />)
                     }
