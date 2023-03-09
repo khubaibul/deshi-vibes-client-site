@@ -25,7 +25,7 @@ const ProductDetails = () => {
         }
     }, [data?.message, data?.acknowledged]);
 
-    console.log(data);
+    console.log(user);
 
     if (isLoading) {
         return <div className='h-screen flex items-center justify-center'>

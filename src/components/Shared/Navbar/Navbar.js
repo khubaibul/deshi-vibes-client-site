@@ -9,6 +9,7 @@ import { logout } from '../../../features/auth/authSlice';
 import logo from "../../../assets/logo.png";
 import menuClose from "../../../assets/close.png";
 import hamBurger from "../../../assets/menu-burger.png";
+import useIsAdmin from '../../../Hooks/IsAdmin/useIsAdmin';
 
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -16,6 +17,7 @@ const Navbar = () => {
     const { isLoading, user, googleLoading, isError, error } = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
+    const [isAdmin, isAdminLoading] = useIsAdmin(user?.email);
     const changeNavbarContent = () => {
         if (window.scrollY >= 150) {
             setScroll(true)
@@ -51,15 +53,21 @@ const Navbar = () => {
             }
         </div>
         <div className='flex lg:flex-row md:flex-row flex-col lg:items-center md:items-center gap-x-2 gap-y-5'>
-            <NavLink className="text-xl">
+            <NavLink to="/user-profile" className="text-xl">
                 <AiOutlineUser />
             </NavLink>
-            <NavLink to="/cart" className="text-xl">
-                <BsCart2 />
-            </NavLink>
-            <NavLink to="/dashboard" className="px-5 border border-primary hover:bg-primary text-primary hover:text-white transition-all active:bg-opacity-80 font-bebas tracking-wide">
-                Dashboard
-            </NavLink>
+            {
+                !isAdmin === "Admin" &&
+                <NavLink to="/cart" className="text-xl">
+                    <BsCart2 />
+                </NavLink>
+            }
+            {
+                isAdmin === "Admin" &&
+                <NavLink to="/dashboard" className="px-5 border border-primary hover:bg-primary text-primary hover:text-white transition-all active:bg-opacity-80 font-bebas tracking-wide">
+                    Dashboard
+                </NavLink>
+            }
             {
                 user?.uid ?
                     <button

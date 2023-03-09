@@ -6,20 +6,39 @@ export const productsApi = createApi({
     endpoints: (builder) => ({
         getProducts: builder.query({
             query: () => "/products",
+            providesTags: ['deleteProduct']
         }),
         getProductById: builder.query({
             query: (_id) => `/product/${_id}`,
         }),
+        deleteProductById: builder.mutation({
+            query: (_id) => ({
+                url: `/delete-product/${_id}`,
+                method: "DELETE"
+            }),
+            invalidatesTags: ['deleteProduct']
+        }),
+        getCustomers: builder.query({
+            query: () => "/all-customer",
+            providesTags: ['deleteCustomer']
+        }),
+        deleteCustomerByEmail: builder.mutation({
+            query: (email) => ({
+                url: `/delete-customer/${email}`,
+                method: "DELETE"
+            }),
+            invalidatesTags: ['deleteCustomer']
+        }),
         getCartProductByEmail: builder.query({
             query: (email) => `/cart-product/${email}`,
-            providesTags: ['cartFromCart']
+            providesTags: ['deleteFromCart']
         }),
         deleteCartProductById: builder.mutation({
             query: (productId) => ({
                 url: `/delete-cart-product/${productId}`,
                 method: "DELETE"
             }),
-            invalidatesTags: ['cartFromCart']
+            invalidatesTags: ['deleteFromCart']
         }),
         addProduct: builder.mutation({
             query: (data) => ({
@@ -38,4 +57,4 @@ export const productsApi = createApi({
     }),
 })
 
-export const { useGetProductsQuery, useGetProductByIdQuery, useAddProductMutation, useAddToCartMutation, useGetCartProductByEmailQuery, useDeleteCartProductByIdMutation } = productsApi;
+export const { useGetProductsQuery, useGetProductByIdQuery, useAddProductMutation, useAddToCartMutation, useGetCartProductByEmailQuery, useDeleteCartProductByIdMutation, useGetCustomersQuery, useDeleteCustomerByEmailMutation, useDeleteProductByIdMutation } = productsApi;

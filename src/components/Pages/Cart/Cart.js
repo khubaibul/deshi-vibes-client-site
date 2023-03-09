@@ -15,12 +15,12 @@ const Cart = () => {
         <div className='h-screen flex justify-center items-center'>
             <Loader />
         </div>
-    }
-    console.log(data);
+    };
+
     const deleteProductFromCart = (productId) => {
 
         deleteFromCart(productId);
-    }
+    };
 
     return (
         <div className='mt-10'>

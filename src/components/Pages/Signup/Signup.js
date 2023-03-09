@@ -58,7 +58,7 @@ const Signup = () => {
                                     console.log(result);
                                     form.reset();
                                     toast.success("SignUp Successful...!")
-                                    navigate(from, { replace: true });
+                                    // navigate(from, { replace: true });
                                 })
 
                         })

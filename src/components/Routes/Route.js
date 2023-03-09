@@ -3,6 +3,10 @@ import DashboardLayouts from "../Layouts/DashboardLayouts";
 import MainLayouts from "../Layouts/MainLayouts";
 import AddProduct from "../Pages/AddProduct/AddProduct";
 import Cart from "../Pages/Cart/Cart";
+import Customers from "../Pages/Customers/Customers";
+import Dashboard from "../Pages/Dashboard/Dashboard";
+import DashboardOrders from "../Pages/DashboardOrders/DashboardOrders";
+import DashboardProducts from "../Pages/DashboardProducts/DashboardProducts";
 import Home from "../Pages/Home/Home";
 import Login from "../Pages/Login/Login";
 import ProductDetails from "../Pages/ProductDetails/ProductDetails";
@@ -40,7 +44,7 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/cart",
-                element: <Cart />
+                element: <PrivateRoute><Cart /></PrivateRoute>
             },
             {
                 path: "/user-profile",
@@ -48,12 +52,28 @@ export const router = createBrowserRouter([
             },
             {
                 path: "/dashboard",
-                element: <DashboardLayouts />,
+                element: <PrivateRoute><DashboardLayouts /></PrivateRoute>,
                 children: ([
+                    {
+                        path: "/dashboard",
+                        element: <Dashboard />
+                    },
                     {
                         path: "/dashboard/add-product",
                         element: <AddProduct />
-                    }
+                    },
+                    {
+                        path: "/dashboard/customers",
+                        element: <Customers />
+                    },
+                    {
+                        path: "/dashboard/products",
+                        element: <DashboardProducts />
+                    },
+                    {
+                        path: "/dashboard/orders",
+                        element: <DashboardOrders />
+                    },
                 ])
             },
         ])

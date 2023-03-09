@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
+import { useSelector } from 'react-redux';
 import { useAddProductMutation } from '../../../features/products/productsSlice';
 import Spinner from '../../Shared/Spinner/Spinner';
 
@@ -8,6 +9,7 @@ const AddProduct = () => {
     const [loading, setLoading] = useState(false);
     const [category, setCategory] = useState("Men");
     const [postProduct, { data, isError, error, isLoading, isSuccess }] = useAddProductMutation();
+    const { user } = useSelector(state => state.auth);
 
     console.log(data);
 
@@ -20,7 +22,6 @@ const AddProduct = () => {
 
         }
     }, [isLoading, isSuccess, loading]);
-
 
 
     const handleAddProduct = e => {
