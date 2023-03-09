@@ -56,12 +56,9 @@ const Navbar = () => {
             <NavLink to="/user-profile" className="text-xl">
                 <AiOutlineUser />
             </NavLink>
-            {
-                !isAdmin === "Admin" &&
-                <NavLink to="/cart" className="text-xl">
-                    <BsCart2 />
-                </NavLink>
-            }
+            <NavLink to="/cart" className="text-xl">
+                <BsCart2 />
+            </NavLink>
             {
                 isAdmin === "Admin" &&
                 <NavLink to="/dashboard" className="px-5 border border-primary hover:bg-primary text-primary hover:text-white transition-all active:bg-opacity-80 font-bebas tracking-wide">

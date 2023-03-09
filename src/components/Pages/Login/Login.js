@@ -4,13 +4,15 @@ import view from "../../../assets/view.png";
 import hide from "../../../assets/hide.png";
 import google from "../../../assets/google.png";
 import { useDispatch, useSelector } from 'react-redux';
-import { googleLogin, loginUser } from '../../../features/auth/authSlice';
+import { googleLogin, loginUser, resetPassword } from '../../../features/auth/authSlice';
 import { toast } from 'react-hot-toast';
 import Spinner from '../../Shared/Spinner/Spinner';
 import { setStoreUser } from '../../../Hooks/StoreUser/setStoreUser';
+import ResetPasswordModal from '../ResetPasswordModal/ResetPasswordModal';
 
 const Login = () => {
     const [passVisible, setPassVisible] = useState(false);
+    const [modalOpen, setModalOpen] = useState(false);
     const { isLoading, user, googleLoading, isError, error } = useSelector(state => state.auth);
     const dispatch = useDispatch();
     const location = useLocation();
@@ -36,6 +38,17 @@ const Login = () => {
                 navigate(from, { replace: true });
             }
         })
+    }
+
+    const resetPasswordByEmail = (e) => {
+        e.preventDefault();
+        const email = e.target.email.value;
+        dispatch(resetPassword(email)).then(result => {
+            console.log(result);
+            setModalOpen(!modalOpen);
+            toast("Please check your email to reset password...")
+        })
+
     }
 
 
@@ -111,14 +124,17 @@ const Login = () => {
                                 }
                             </p>
                         </div>
-                        <div className="flex items-center gap-2 text-primary text-sm font-medium">
-                            <input
-                                className='accent-primary mt-1'
-                                name="remember"
-                                id="remember"
-                                type="checkbox"
-                            />
-                            <label htmlFor="remember">Remember me</label>
+                        <div className="flex items-center justify-between gap-2 text-primary text-sm font-medium">
+                            <div className='flex gap-x-2'>
+                                <input
+                                    className='accent-primary mt-1'
+                                    name="remember"
+                                    id="remember"
+                                    type="checkbox"
+                                />
+                                <label htmlFor="remember">Remember me</label>
+                            </div>
+                            <button onClick={() => setModalOpen(!modalOpen)} >Forgot Password?</button>
                         </div>
                         {/* <div>
                             <h5>Admin Credential</h5>
@@ -155,6 +171,10 @@ const Login = () => {
                     </div>
                 </div>
             </div>
+            {
+                modalOpen && <ResetPasswordModal modalOpen={modalOpen} setModalOpen={setModalOpen}
+                    resetPasswordByEmail={resetPasswordByEmail} />
+            }
         </section>
     );
 };
