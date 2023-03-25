@@ -3,6 +3,7 @@ import DashboardLayouts from "../Layouts/DashboardLayouts";
 import MainLayouts from "../Layouts/MainLayouts";
 import AddProduct from "../Pages/AddProduct/AddProduct";
 import Cart from "../Pages/Cart/Cart";
+import CheckoutDetails from "../Pages/CheckoutDetails/CheckoutDetails";
 import Customers from "../Pages/Customers/Customers";
 import Dashboard from "../Pages/Dashboard/Dashboard";
 import DashboardOrders from "../Pages/DashboardOrders/DashboardOrders";
@@ -45,6 +46,10 @@ export const router = createBrowserRouter([
             {
                 path: "/cart",
                 element: <PrivateRoute><Cart /></PrivateRoute>
+            },
+            {
+                path: "/checkout-details",
+                element: <PrivateRoute><CheckoutDetails /></PrivateRoute>
             },
             {
                 path: "/user-profile",

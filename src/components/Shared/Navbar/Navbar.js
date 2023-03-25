@@ -10,11 +10,13 @@ import logo from "../../../assets/logo.png";
 import menuClose from "../../../assets/close.png";
 import hamBurger from "../../../assets/menu-burger.png";
 import useIsAdmin from '../../../Hooks/IsAdmin/useIsAdmin';
+import { useGetCartProductByEmailQuery } from '../../../features/products/productsSlice';
 
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
     const [scroll, setScroll] = useState(false);
     const { isLoading, user, googleLoading, isError, error } = useSelector(state => state.auth);
+    const { data: cartProducts } = useGetCartProductByEmailQuery(user?.email, { refetchOnMountOrArgChange: true, refetchOnFocus: true });
     const dispatch = useDispatch();
 
     const [isAdmin, isAdminLoading] = useIsAdmin(user?.email);
@@ -56,7 +58,8 @@ const Navbar = () => {
             <NavLink to="/user-profile" className="text-xl">
                 <AiOutlineUser />
             </NavLink>
-            <NavLink to="/cart" className="text-xl">
+            <NavLink to="/cart" className="text-xl relative mr-3">
+                <span className='absolute -top-4 -right-3 text-sm bg-primary rounded-full w-5 h-5 flex justify-center items-center text-white'>{cartProducts?.length}</span>
                 <BsCart2 />
             </NavLink>
             {

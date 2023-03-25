@@ -1,17 +1,20 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { selectedCartProducts } from '../../../features/cart/cartSlice';
 import { useDeleteCartProductByIdMutation, useGetCartProductByEmailQuery } from '../../../features/products/productsSlice';
 import Loader from '../../Shared/Loader/Loader';
 import CartProduct from '../CartProduct/CartProduct';
 
 const Cart = () => {
-    const [checkedCarts, setCheckedCarts] = useState([]);
 
-    const { user } = useSelector(state => state.auth)
+    const { user } = useSelector(state => state.auth);
+    const { checkedCartProducts } = useSelector(state => state.cart);
     const { data: cartProducts, isLoading, isError } = useGetCartProductByEmailQuery(user?.email, { refetchOnMountOrArgChange: true, refetchOnFocus: true });
 
     const [deleteFromCart, { data }] = useDeleteCartProductByIdMutation();
+
+    const dispatch = useDispatch();
 
     if (isLoading) {
         <div className='h-screen flex justify-center items-center'>
@@ -24,13 +27,9 @@ const Cart = () => {
     };
 
 
-    console.log(checkedCarts);
-    // const handleCheckedCartProduct = (cartProduct) => {
-    //     // const withNewChecked = [...checkedCarts, cartProduct];
-    //     // setCheckedCarts(withNewChecked)
-    //     setCheckedCarts([...checkedCarts, cartProduct])
-    //     console.log(checkedCarts);
-    // }
+    const handleCheckedCartProduct = (cartProduct) => {
+        dispatch(selectedCartProducts(cartProduct))
+    }
 
 
     return (
@@ -50,9 +49,7 @@ const Cart = () => {
                                 key={cartProduct._id}
                                 cartProduct={cartProduct}
                                 deleteProductFromCart={deleteProductFromCart}
-                                // handleCheckedCartProduct={handleCheckedCartProduct}
-                                checkedCarts={checkedCarts}
-                                setCheckedCarts={setCheckedCarts}
+                                handleCheckedCartProduct={handleCheckedCartProduct}
                             />
                         )
                     }
@@ -63,7 +60,7 @@ const Cart = () => {
                         <div className='flex flex-col gap-y-2'>
                             <div className='flex justify-between'>
                                 <p>Total items:</p>
-                                <span>{checkedCarts?.length}</span>
+                                <span>{checkedCartProducts?.length}</span>
                             </div>
                             <div className='flex justify-between'>
                                 <p>Price:</p>
@@ -86,7 +83,7 @@ const Cart = () => {
                                 <span>${220}.00</span>
                             </div>
                         </div>
-                        <Link className='flex justify-center bg-primary hover:bg-secondary active:bg-opacity-80 transition-all duration-200 font-medium font-bebas tracking-widest text-white py-1'>
+                        <Link to="/checkout-details" className='flex justify-center bg-primary hover:bg-secondary active:bg-opacity-80 transition-all duration-200 font-medium font-bebas tracking-widest text-white py-1'>
                             Proceed To Checkout
                         </Link>
                     </div>
