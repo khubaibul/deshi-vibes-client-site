@@ -52,12 +52,6 @@ const Login = () => {
     }
 
 
-    useEffect(() => {
-        if (isError) {
-            toast.error(error)
-        }
-    }, [isError, error]);
-
     return (
         <section className="lg:w-1/3 md:w-2/3 w-full px-4 lg:px-0 md:px-0 mx-auto my-7 md:my-16">
             <div className="border border-primary shadow">

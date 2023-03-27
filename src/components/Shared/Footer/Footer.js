@@ -68,19 +68,19 @@ const Footer = () => {
                 </div>
                 <div className='lg:flex md:flex sm:flex gap-x-5 items-center m-0 p-0'>
                     <div className='flex items-center justify-center gap-5'>
-                        <img src={googlePay} className="w-9 h-full" alt="" />
-                        <img src={applePay} className="w-9 h-full" alt="" />
-                        <img src={shopPay} className="w-9 h-full" alt="" />
+                        <img src={googlePay} className="w-12 aspect-[3/2] object-contain mix-blend-color-burn" alt="" />
+                        <img src={applePay} className="w-12 aspect-[3/2] object-contain mix-blend-color-burn" alt="" />
+                        <img src={shopPay} className="w-12 aspect-[3/2] object-contain mix-blend-color-burn" alt="" />
                     </div>
                     <div className='flex items-center justify-center gap-5'>
-                        <img src={masterCard} className="w-9 h-full" alt="" />
-                        <img src={americanExpress} className="w-10 h-full" alt="" />
-                        <img src={visa} className="w-10 h-full" alt="" />
+                        <img src={masterCard} className="w-12 aspect-[3/2] object-contain mix-blend-color-burn" alt="" />
+                        <img src={americanExpress} className="w-12 aspect-[3/2] object-contain mix-blend-color-burn" alt="" />
+                        <img src={visa} className="w-12 aspect-[3/2] object-contain mix-blend-color-burn" alt="" />
                     </div>
                     <div className='flex items-center justify-center gap-5'>
-                        <img src={paypal} className="w-14 h-full" alt="" />
-                        <img src={discover} className="w-12 h-full" alt="" />
-                        <img src={ssl} className="w-6 h-full" alt="" />
+                        <img src={paypal} className="w-12 aspect-[3/2] object-contain mix-blend-color-burn" alt="" />
+                        <img src={discover} className="w-12 aspect-[3/2] object-contain mix-blend-color-burn" alt="" />
+                        <img src={ssl} className="w-12 aspect-[3/2] object-contain mix-blend-color-burn" alt="" />
                     </div>
                 </div>
                 <p className='m-0 p-0 text-xs'>Copyright © 2023 - All right reserved by <span className='font-bold text-primary'>Deshi Vibes</span></p>

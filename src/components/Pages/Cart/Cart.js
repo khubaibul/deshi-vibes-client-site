@@ -31,6 +31,21 @@ const Cart = () => {
         dispatch(selectedCartProducts(cartProduct))
     }
 
+    const prices = checkedCartProducts.map(product => product.productPrice);
+    console.log(prices);
+
+    const total = prices.reduce((prev, curr) => prev + curr, 0);
+
+    let shipping;
+    if (total >= 200) {
+        shipping = 0;
+    }
+    else {
+        shipping = 19
+    }
+
+    const grandTotal = total + shipping;
+
 
     return (
         <div className='mt-6'>
@@ -64,11 +79,11 @@ const Cart = () => {
                             </div>
                             <div className='flex justify-between'>
                                 <p>Price:</p>
-                                <span>${200}.00</span>
+                                <span>{total}.00</span>
                             </div>
                             <div className='flex justify-between'>
                                 <p>Shipping Fee:</p>
-                                <span>${20}.00</span>
+                                <span>${shipping}.00</span>
                             </div>
                             <div className='flex items-center'>
                                 <input
@@ -80,7 +95,7 @@ const Cart = () => {
                             </div>
                             <div className='flex justify-between'>
                                 <p>Subtotal:</p>
-                                <span>${220}.00</span>
+                                <span>${grandTotal}.00</span>
                             </div>
                         </div>
                         <Link to="/checkout-details" className='flex justify-center bg-primary hover:bg-secondary active:bg-opacity-80 transition-all duration-200 font-medium font-bebas tracking-widest text-white py-1'>

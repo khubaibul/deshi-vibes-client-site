@@ -6,7 +6,7 @@ const CartProduct = ({ cartProduct, deleteProductFromCart, handleCheckedCartProd
     const { productId, productImage, productName, productPrice } = cartProduct;
     const { checkedCartProducts } = useSelector(state => state.cart);
     const checked = checkedCartProducts?.find(p => p._id === cartProduct._id)
-    console.log(checked);
+
     return (
         <div className="w-full border cursor-pointer border-primary">
             <label className="cursor-pointer w-full ">
