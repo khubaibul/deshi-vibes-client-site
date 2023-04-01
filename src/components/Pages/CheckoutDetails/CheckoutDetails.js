@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { useAddToPaymentMutation } from '../../../features/products/productsSlice';
+import Spinner from '../../Shared/Spinner/Spinner';
 
 const CheckoutDetails = () => {
     const [shippingAddress, setShippingAddress] = useState("");
     const { user } = useSelector(state => state.auth);
     const { checkedCartProducts } = useSelector(state => state.cart);
+    const [addToPayment, { data, isError, error, isLoading, isSuccess }] = useAddToPaymentMutation();
 
     const prices = checkedCartProducts.map(product => product.productPrice);
 
@@ -19,8 +21,28 @@ const CheckoutDetails = () => {
         shipping = 19
     }
 
+
     const grandTotal = total + shipping;
-    console.log(shippingAddress);
+
+    const orderDetails = {
+        buyerEmail: user?.email,
+        price: grandTotal,
+        shippingAddress,
+        products: checkedCartProducts
+    }
+
+    const handlePlaceOrder = () => {
+        addToPayment(orderDetails).then(result => {
+            console.log(result);
+            if (result.data.redirectURL) {
+                window.location.replace(result.data.redirectURL)
+            }
+            console.log(result);
+        })
+
+    }
+
+
 
 
     return (
@@ -34,6 +56,7 @@ const CheckoutDetails = () => {
                         type="text"
                         className='lg:w-1/2 py-2 px-4 focus:outline-primary bg-gray-light'
                         placeholder='Shipping address...'
+                        required
                     />
                 </div>
                 <div className='flex flex-col mt-2'>
@@ -67,9 +90,13 @@ const CheckoutDetails = () => {
                             <span>${grandTotal}.00</span>
                         </div>
                     </div>
-                    <Link className='flex justify-center bg-primary hover:bg-secondary active:bg-opacity-80 transition-all duration-200 font-medium font-bebas tracking-widest text-white py-1'>
-                        Place Order
-                    </Link>
+                    <button
+                        onClick={handlePlaceOrder}
+                        className='flex justify-center bg-primary hover:bg-secondary active:bg-opacity-80 transition-all duration-200 font-medium font-bebas tracking-widest text-white py-1'>
+                        {
+                            isLoading ? <Spinner borderColor={"primary"} /> : "Place Order"
+                        }
+                    </button>
                 </div>
             </div>
         </div>

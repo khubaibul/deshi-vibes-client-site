@@ -54,7 +54,17 @@ export const productsApi = createApi({
                 body: data
             })
         }),
+        addToPayment: builder.mutation({
+            query: (data) => ({
+                url: "/ssl-commerz/payments",
+                method: "POST",
+                body: data
+            })
+        }),
+        getOrdersByEmail: builder.query({
+            query: (email) => `/my-orders/${email}`,
+        }),
     }),
 })
 
-export const { useGetProductsQuery, useGetProductByIdQuery, useAddProductMutation, useAddToCartMutation, useGetCartProductByEmailQuery, useDeleteCartProductByIdMutation, useGetCustomersQuery, useDeleteCustomerByEmailMutation, useDeleteProductByIdMutation } = productsApi;
+export const { useGetProductsQuery, useGetProductByIdQuery, useAddProductMutation, useAddToCartMutation, useGetCartProductByEmailQuery, useDeleteCartProductByIdMutation, useGetCustomersQuery, useDeleteCustomerByEmailMutation, useDeleteProductByIdMutation, useAddToPaymentMutation, useGetOrdersByEmailQuery } = productsApi;

@@ -24,9 +24,12 @@ const Login = () => {
         const form = e.target;
         const email = form.email.value;
         const password = form.password.value;
-        dispatch(loginUser({ email, password })).then(result => setStoreUser(result.payload))
-
-        toast.success("Login Successful");
+        dispatch(loginUser({ email, password })).then(result => {
+            setStoreUser(result.payload);
+            if (result.payload.email) {
+                toast.success("Login Successful...")
+            }
+        })
         navigate(from, { replace: true });
     }
 
@@ -34,7 +37,7 @@ const Login = () => {
         dispatch(googleLogin()).then(result => {
             if (result.payload.email) {
                 setStoreUser(result.payload);
-                toast.success("Login With Google Successful");
+                toast.success("Login With Google Successful...");
                 navigate(from, { replace: true });
             }
         })

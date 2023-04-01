@@ -22,7 +22,7 @@ const Footer = () => {
                     </div>
                     <div className='w-[53px] h-[0.5px] opacity-50 bg-primary'></div>
                     <div className='flex flex-col gap-y-2 mt-4'>
-                        <Link to="/about-us" className="link link-hover text-sm text-primary opacity-70">Returns & Exchange</Link>
+                        <Link className="link link-hover text-sm text-primary opacity-70">Returns & Exchange</Link>
                         <Link className="link link-hover text-sm text-primary opacity-70">Privacy & Policy</Link>
                         <Link className="link link-hover text-sm text-primary opacity-70">Contact</Link>
                         <Link to="/sign-up" className="link link-hover text-sm text-primary opacity-70">Be A Seller</Link>

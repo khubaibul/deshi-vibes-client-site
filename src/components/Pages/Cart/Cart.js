@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { selectedCartProducts } from '../../../features/cart/cartSlice';
@@ -7,11 +7,10 @@ import Loader from '../../Shared/Loader/Loader';
 import CartProduct from '../CartProduct/CartProduct';
 
 const Cart = () => {
-
+    const [disable, setDisable] = useState(false);
     const { user } = useSelector(state => state.auth);
     const { checkedCartProducts } = useSelector(state => state.cart);
     const { data: cartProducts, isLoading, isError } = useGetCartProductByEmailQuery(user?.email, { refetchOnMountOrArgChange: true, refetchOnFocus: true });
-
     const [deleteFromCart, { data }] = useDeleteCartProductByIdMutation();
 
     const dispatch = useDispatch();
@@ -32,7 +31,6 @@ const Cart = () => {
     }
 
     const prices = checkedCartProducts.map(product => product.productPrice);
-    console.log(prices);
 
     const total = prices.reduce((prev, curr) => prev + curr, 0);
 
@@ -45,7 +43,6 @@ const Cart = () => {
     }
 
     const grandTotal = total + shipping;
-
 
     return (
         <div className='mt-6'>
@@ -98,9 +95,18 @@ const Cart = () => {
                                 <span>${grandTotal}.00</span>
                             </div>
                         </div>
-                        <Link to="/checkout-details" className='flex justify-center bg-primary hover:bg-secondary active:bg-opacity-80 transition-all duration-200 font-medium font-bebas tracking-widest text-white py-1'>
-                            Proceed To Checkout
-                        </Link>
+                        {
+                            checkedCartProducts.length > 0
+                                ?
+                                <Link
+                                    to="/checkout-details"
+                                    className='flex justify-center bg-primary hover:bg-secondary active:bg-opacity-80 transition-all duration-200 font-medium font-bebas tracking-widest text-white py-1'
+                                >
+                                    Proceed To Checkout
+                                </Link>
+                                :
+                                <p>Please select</p>
+                        }
                     </div>
                 </div>
             </div>
