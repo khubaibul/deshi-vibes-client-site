@@ -33,11 +33,14 @@ const CheckoutDetails = () => {
 
     const handlePlaceOrder = () => {
         addToPayment(orderDetails).then(result => {
-            console.log(result);
+            if (result.data.error) {
+                return <div className='text-red mt-10 text-center'>
+                    <h2 className='font-medium'>Something went wrong... Please try again</h2>
+                </div>
+            }
             if (result.data.redirectURL) {
                 window.location.replace(result.data.redirectURL)
             }
-            console.log(result);
         })
 
     }

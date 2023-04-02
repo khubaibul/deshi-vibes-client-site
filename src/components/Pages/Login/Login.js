@@ -81,8 +81,12 @@ const Login = () => {
                         Sign Up
                     </NavLink>
                 </div>
-
                 <div className="p-10">
+                    <div>
+                        <h5>Admin Credential</h5>
+                        <p className='text-xs font-medium text-purple'>Email: admin@gmail.com</p>
+                        <p className='text-xs font-medium text-purple'>Pass: 03101999</p>
+                    </div>
                     <form
                         onSubmit={handleLogin}
                         className="flex flex-col gap-4">
@@ -133,11 +137,6 @@ const Login = () => {
                             </div>
                             <button onClick={() => setModalOpen(!modalOpen)} >Forgot Password?</button>
                         </div>
-                        {/* <div>
-                            <h5>Admin Credential</h5>
-                            <p className='text-sm'>Email: admin@gmail.com</p>
-                            <p className='text-sm'>Pass: 03101999</p>
-                        </div> */}
                         <button
                             type='submit'
                             className="bg-primary hover:bg-secondary active:bg-opacity-80 py-2 px-4 cursor-pointer font-medium text-white transition-all duration-300"

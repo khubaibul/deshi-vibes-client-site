@@ -3,11 +3,10 @@ import { BsArrowDownCircle, BsArrowUpCircle } from "react-icons/bs";
 
 const Order = ({ order }) => {
     const [showMore, setShowMore] = useState(false);
-    console.log(order);
     const { transactionId, paidAt, products, price } = order;
     return (
         <div className='max-w-4xl mx-auto bg-gray shadow-lg py-4 px-8'>
-            <div className='flex lg:flex-row md:flex-row sm:flex-row flex-col justify-between'>
+            <div className='flex lg:flex-row md:flex-row sm:flex-row flex-col justify-between gap-y-4'>
                 <div>
                     <div className='flex text-sm items-center justify-center gap-x-2'>
                         <h2>Transaction ID :</h2>
@@ -15,7 +14,7 @@ const Order = ({ order }) => {
                     </div>
                     <div className='flex text-sm items-center lg:justify-start md:justify-start sm:justify-start justify-center gap-x-2'>
                         <h2>Placed On :</h2>
-                        <h2 className='font-medium'>{paidAt.substring(0, 10)}</h2>
+                        <h2 className='font-medium'>{paidAt?.substring(0, 10)}</h2>
                     </div>
                 </div>
                 <div className='text-sm text-center'>
@@ -28,7 +27,7 @@ const Order = ({ order }) => {
                 </div>
                 <div className='text-sm text-center'>
                     <h2>Status</h2>
-                    <h2 className='font-medium px-2 rounded-full bg-gray-dark/10'>Pending</h2>
+                    <h2 className={`font-medium px-2 rounded-full bg-gray-dark/10  ${order?.status === "Canceled" && "bg-red/90 text-white/80"} ${order?.status === "Shipped" && "bg-green text-gray-dark"}`}>{order?.status ? order?.status : "Pending"}</h2>
                 </div>
             </div>
 

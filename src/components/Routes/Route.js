@@ -16,6 +16,7 @@ import Signup from "../Pages/Signup/Signup";
 import UserProfile from "../Pages/UserProfile/UserProfile";
 import ErrorPage from "../Shared/ErrorPage/ErrorPage";
 import PrivateRoute from "./PrivateRoute";
+import PaymentFail from "../Pages/Payment/PaymentFail";
 
 export const router = createBrowserRouter([
     {
@@ -54,6 +55,10 @@ export const router = createBrowserRouter([
             {
                 path: "/user-profile",
                 element: <PrivateRoute><UserProfile /></PrivateRoute>
+            },
+            {
+                path: "/payment/fail",
+                element: <PrivateRoute><PaymentFail /></PrivateRoute>
             },
             {
                 path: "/dashboard",

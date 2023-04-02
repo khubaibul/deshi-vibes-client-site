@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
 export const productsApi = createApi({
     reducerPath: 'productsApi',
-    baseQuery: fetchBaseQuery({ baseUrl: 'http://localhost:5000/' }),
+    baseQuery: fetchBaseQuery({ baseUrl: 'https://deshi-vibes-server.vercel.app' }),
     endpoints: (builder) => ({
         getProducts: builder.query({
             query: () => "/products",
@@ -64,7 +64,27 @@ export const productsApi = createApi({
         getOrdersByEmail: builder.query({
             query: (email) => `/my-orders/${email}`,
         }),
+        getAllOrders: builder.query({
+            query: () => "/all-orders",
+            providesTags: ['shipped, canceled']
+        }),
+        setShippedInOrder: builder.mutation({
+            query: (_id) => ({
+                url: `/shipped-order/${_id}`,
+                method: "PATCH",
+                body: { _id }
+            }),
+            invalidatesTags: ['shipped, canceled']
+        }),
+        setCanceledInOrder: builder.mutation({
+            query: (_id) => ({
+                url: `/canceled-order/${_id}`,
+                method: "PATCH",
+                body: { _id }
+            }),
+            invalidatesTags: ['shipped, canceled']
+        }),
     }),
 })
 
-export const { useGetProductsQuery, useGetProductByIdQuery, useAddProductMutation, useAddToCartMutation, useGetCartProductByEmailQuery, useDeleteCartProductByIdMutation, useGetCustomersQuery, useDeleteCustomerByEmailMutation, useDeleteProductByIdMutation, useAddToPaymentMutation, useGetOrdersByEmailQuery } = productsApi;
+export const { useGetProductsQuery, useGetProductByIdQuery, useAddProductMutation, useAddToCartMutation, useGetCartProductByEmailQuery, useDeleteCartProductByIdMutation, useGetCustomersQuery, useDeleteCustomerByEmailMutation, useDeleteProductByIdMutation, useAddToPaymentMutation, useGetOrdersByEmailQuery, useGetAllOrdersQuery, useSetShippedInOrderMutation, useSetCanceledInOrderMutation } = productsApi;

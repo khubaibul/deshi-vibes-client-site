@@ -16,6 +16,9 @@ const UserProfile = () => {
     return (
         <div className='mt-10'>
             <h3 className='text-center text-primary font-bebas text-2xl tracking-widest mb-4'>My Orders</h3>
+            {
+                orders?.length < 1 && <p className='text-center font-medium'>No orders found</p>
+            }
             <div>
                 {
                     orders?.map(order => <Order key={order._id} order={order} />)
