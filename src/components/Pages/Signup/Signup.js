@@ -20,6 +20,8 @@ const Signup = () => {
     const from = location.state?.from?.pathname || "/user-profile";
 
 
+    console.log(user);
+
     const handleSignUp = e => {
         e.preventDefault();
         const form = e.target;
@@ -49,16 +51,13 @@ const Signup = () => {
                     dispatch(createUser({ email, password }))
                         .then(result => {
                             // Store User Into DataBase
-                            console.log("from cloudinary", data);
-                            console.log("photo_url", data.url);
                             setStoreUser(user);
 
-                            dispatch(updateUser(name, data.url))
+                            dispatch(updateUser({ name, photo: data.url }))
                                 .then(result => {
-                                    console.log(result);
                                     form.reset();
                                     toast.success("SignUp Successful...!")
-                                    // navigate(from, { replace: true });
+                                    navigate(from, { replace: true });
                                 })
 
                         })

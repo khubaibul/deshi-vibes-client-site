@@ -11,6 +11,7 @@ import menuClose from "../../../assets/close.png";
 import hamBurger from "../../../assets/menu-burger.png";
 import useIsAdmin from '../../../Hooks/IsAdmin/useIsAdmin';
 import { useGetCartProductByEmailQuery } from '../../../features/products/productsSlice';
+import { toast } from 'react-hot-toast';
 
 const Navbar = () => {
     const [menuOpen, setMenuOpen] = useState(false);
@@ -18,8 +19,9 @@ const Navbar = () => {
     const { isLoading, user, googleLoading, isError, error } = useSelector(state => state.auth);
     const { data: cartProducts } = useGetCartProductByEmailQuery(user?.email, { refetchOnMountOrArgChange: true, refetchOnFocus: true });
     const dispatch = useDispatch();
+    const [isAdmin, setIsAdmin] = useIsAdmin(user?.email, user);
+    console.log(isAdmin, user);
 
-    const [isAdmin, isAdminLoading] = useIsAdmin(user?.email);
     const changeNavbarContent = () => {
         if (window.scrollY >= 150) {
             setScroll(true)
@@ -33,9 +35,11 @@ const Navbar = () => {
 
 
     const handleSignOut = () => {
+
         signOut(auth)
             .then(() => {
                 dispatch(logout())
+                setIsAdmin(false)
             })
     }
 
@@ -56,14 +60,25 @@ const Navbar = () => {
         </div>
         <div className='flex lg:flex-row md:flex-row flex-col lg:items-center md:items-center gap-x-2 gap-y-5'>
             <NavLink to="/user-profile" className="text-xl">
-                <AiOutlineUser />
+                {
+                    user?.photoURL ?
+                        <div className='flex items-center gap-x-1 mr-4'>
+                            <img className='w-8 h-8 rounded-full' src={user?.photoURL} alt='' />
+                            <p className='text-sm font-medium text-primary'>{user?.displayName}</p>
+                        </div>
+                        :
+                        <div className='flex items-center gap-x-1 mr-4'>
+                            <AiOutlineUser />
+                            <p className='text-sm font-medium text-primary'>Hello Stranger</p>
+                        </div>
+                }
             </NavLink>
-            <NavLink to="/cart" className="text-xl relative mr-3">
+            <NavLink to="/cart" className="text-xl relative mr-3 w-6">
                 <span className='absolute -top-4 -right-3 text-sm bg-primary rounded-full w-5 h-5 flex justify-center items-center text-white'>{cartProducts?.length}</span>
                 <BsCart2 />
             </NavLink>
             {
-                isAdmin === "Admin" &&
+                (isAdmin === "Admin" && isAdmin !== false) &&
                 <NavLink to="/dashboard" className="px-5 border border-primary hover:bg-primary text-primary hover:text-white transition-all active:bg-opacity-80 font-bebas tracking-wide">
                     Dashboard
                 </NavLink>
@@ -85,7 +100,7 @@ const Navbar = () => {
 
 
     return (
-        <div className='sticky top-0 z-50'>
+        <div className='lg:sticky md:sticky top-0 z-50'>
             <div>
                 <div className='lg:flex md:flex hidden justify-between px-24 py-3.5 bg-white border-b border-gray-light z-50'>
                     {navLink}
@@ -99,7 +114,7 @@ const Navbar = () => {
             </div>
             {
                 menuOpen &&
-                <div className='lg:hidden md:hidden top-0 left-0 fixed h-full w-[70vw] transition-all ease-in-out duration-500 translate-y-0 z-10 p-4 backdrop-blur-[30px] text-primary'>
+                <div className='lg:hidden md:hidden top-0 left-0 fixed h-full w-[70vw] transition-all ease-in-out duration-500 translate-y-0 z-10 p-4 backdrop-blur-[80px] text-primary'>
                     <div className='flex justify-start mt-8 mb-5 mr-2'>
                         <button onClick={() => setMenuOpen(!menuOpen)}>
                             <img src={menuClose} className="w-7" alt="" />

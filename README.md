@@ -2,7 +2,8 @@
 
 ## Live Website Link : https://deshi-vibes.web.app
 
-## Server Link : https://deshi-vibes-server.vercel.app/products
+## Back-End Code : https://github.com/KIShakib/deshi-vibes-server-site
+## Server Live : https://deshi-vibes-server.vercel.app/products
 
 ## Technology
 

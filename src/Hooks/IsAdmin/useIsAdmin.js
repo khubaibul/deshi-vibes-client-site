@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 
-const useIsAdmin = email => {
+const useIsAdmin = (email, user) => {
     const [isAdmin, setIsAdmin] = useState(false);
     const [isAdminLoading, setIsAdminLoading] = useState(true);
     useEffect(() => {
@@ -12,8 +12,9 @@ const useIsAdmin = email => {
                     setIsAdminLoading(false);
                 })
         }
-    }, [email]);
-    return [isAdmin, isAdminLoading];
+    }, [email, user?.email]);
+
+    return [isAdmin, setIsAdmin, isAdminLoading];
 }
 
 export default useIsAdmin;

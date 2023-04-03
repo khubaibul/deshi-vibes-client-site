@@ -18,7 +18,7 @@ const Hero = () => {
                         className='absolute left-0 transition-all duration-1000'>
                         <FaCaretLeft className='text-6xl text-primary opacity-50 hover:opacity-100' />
                     </button>
-                    <div className='flex flex-col gap-y-4 text-white pl-40'>
+                    <div className='flex flex-col gap-y-4 text-white lg:pl-40 md:pl-20 sm:pl-20 pl-10'>
                         <h1 className='text-4xl font-bebas'>NEW WOMEN APPAREL</h1>
                         <h4 className='font-semibold opacity-80'>Introducing you to the new collection for <span className='text-primary text-xl italic font-bold'>WOMEN...</span></h4>
                         <Link to="/store" className='bg-primary hover:bg-secondary active:opacity-80 w-[150px] text-center py-3 rounded font-bebas tracking-wide'>
