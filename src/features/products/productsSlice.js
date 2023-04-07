@@ -3,6 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 export const productsApi = createApi({
     reducerPath: 'productsApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'https://deshi-vibes-server.vercel.app' }),
+    tagTypes: ['deleteProduct', 'deleteProduct', 'deleteCustomer', 'deleteFromCart', 'shipped, canceled'],
     endpoints: (builder) => ({
         getProducts: builder.query({
             query: () => "/products",
