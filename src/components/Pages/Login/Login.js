@@ -83,7 +83,7 @@ const Login = () => {
                 </div>
                 <div className="p-10">
                     <div>
-                        <h5>Admin Credential</h5>
+                        <h5>Admin Credential <span className='text-xs font-semibold text-red/50'>(testing purpose only)</span> </h5>
                         <p className='text-xs font-medium text-purple'>Email: admin@gmail.com</p>
                         <p className='text-xs font-medium text-purple'>Pass: 03101999</p>
                     </div>
