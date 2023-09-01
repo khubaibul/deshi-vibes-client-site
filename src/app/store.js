@@ -5,7 +5,7 @@ import { productsApi } from '../features/products/productsSlice';
 
 export const store = configureStore({
     reducer: {
-        [productsApi.reducerPath]: productsApi.reducer,
+        [productsApi.reducerPath]: productsApi.reducer, 
         auth: authSlice,
         cart: cartSlice
     },
