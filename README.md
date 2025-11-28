@@ -9,7 +9,7 @@
 
 - Tailwind
 - JavaScript
-- React
+- React (SSSSSSS)
 - Redux-Toolkit
 - AOS
 - Firebase
